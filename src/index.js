@@ -4,6 +4,6 @@ import App from './App';
 let counter = 1
 
 ReactDOM.render(
-  <App counter={counter}/>,
+  <App />,
   document.getElementById('root')
 )
