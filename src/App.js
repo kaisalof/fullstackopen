@@ -6,16 +6,38 @@ const Button = (props) => (
   </button>
 )
 const StatisticsLine = ({ text, value }) => {
-  if (text === 'positive'){
-    return(
+  if (text === 'positive') {
+    return (
       <div>
-        {text} {value} %
+        <table>
+          <tbody>
+            <tr>
+              <td style={{ width: "3.5em" }}>
+                {text}
+              </td>
+              <td>
+                {value} %
+            </td>
+            </tr>
+          </tbody>
+        </table>
       </div>
     )
   }
   return (
     <div>
-      {text} {value}
+      <table>
+        <tbody>
+          <tr>
+            <td style={{ width: "3.5em" }}>
+              {text}
+            </td>
+            <td>
+              {value}
+            </td>
+          </tr>
+        </tbody>
+      </table>
     </div>
   )
 }
