@@ -1,5 +1,26 @@
 import React, { useState } from 'react'
 
+const MostVotes = (props) => {
+  //console.log(props.selected)
+  //console.log(props.all[props.selected])
+  const [max, setMax] = useState(0)
+  const [most, setMost] =useState(0)
+  
+  for(var i = 0; i <= 6; i++){
+    if(props.all[i] > max){
+      setMost(i)
+      setMax(props.all[i])
+    }
+  }
+  return (
+    <div>
+    <h1>Anecdote with most votes</h1>
+      {props.anecdotes[most]}
+      <p>has {max} votes</p>
+    </div>
+  )
+}
+
 const App = () => {
   const anecdotes = [
     'If it hurts, do it more often.',
@@ -16,24 +37,24 @@ const App = () => {
     0: 0, 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0
   })
 
-  const vote = (v) => {    
-    console.log(v)
+  const vote = (v) => {
     const newAll = {
       ...all
     }
     newAll[v]++
     setAll(newAll)
   }
-  
 
   return (
     <div>
+      <h1>Anecdote of the day</h1>
       {anecdotes[selected]}
       <p>has {all[selected]} votes</p>
       <button onClick={() => vote(selected)}>vote</button>
       <button onClick={() => setSelected(Math.floor(Math.random() * 7))}>
         next anecdote
       </button>
+      <MostVotes anecdotes={anecdotes} all={all} selected={selected} />
     </div>
   )
 }
