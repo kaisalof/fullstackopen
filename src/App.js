@@ -12,15 +12,28 @@ const App = () => {
   ]
 
   const [selected, setSelected] = useState(0)
+  const [all, setAll] = useState({
+    0: 0, 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0
+  })
+
+  const vote = (v) => {    
+    console.log(v)
+    const newAll = {
+      ...all
+    }
+    newAll[v]++
+    setAll(newAll)
+  }
+  
 
   return (
     <div>
       {anecdotes[selected]}
-      <br />
+      <p>has {all[selected]} votes</p>
+      <button onClick={() => vote(selected)}>vote</button>
       <button onClick={() => setSelected(Math.floor(Math.random() * 7))}>
         next anecdote
       </button>
-
     </div>
   )
 }
