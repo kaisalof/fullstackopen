@@ -2,8 +2,7 @@ import React from 'react'
 
 const Total = ({ parts }) => {
     const reducer = (accumulator, currentValue) => accumulator + currentValue
-    const a = parts.map(part =>  part.exercises )
-    console.log(a.reduce(reducer))
+    const a = parts.map(part => part.exercises)
     const total = a.reduce(reducer)
 
     return <p style={{ fontWeight: "bold" }}>total of {total} exercises</p>
@@ -40,11 +39,15 @@ const Header = ({ course }) => {
     )
 }
 
-const Course = ({ course }) => {
+const Course = ({ courses }) => {
     return (
         <div>
-            <Header course={course} />
-            <Total parts={course.parts} />
+            {courses.map(course =>
+                <div key={course.id}>
+                    <Header course={course} />
+                    <Total parts={course.parts} />
+                </div>
+            )}
         </div>
     )
 }
