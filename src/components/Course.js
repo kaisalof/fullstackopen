@@ -1,5 +1,14 @@
 import React from 'react'
 
+const Total = ({ parts }) => {
+    const reducer = (accumulator, currentValue) => accumulator + currentValue
+    const a = parts.map(part =>  part.exercises )
+    console.log(a.reduce(reducer))
+    const total = a.reduce(reducer)
+
+    return <p style={{ fontWeight: "bold" }}>total of {total} exercises</p>
+}
+
 const Content = ({ parts }) => {
     return (
         <div>
@@ -35,6 +44,7 @@ const Course = ({ course }) => {
     return (
         <div>
             <Header course={course} />
+            <Total parts={course.parts} />
         </div>
     )
 }
