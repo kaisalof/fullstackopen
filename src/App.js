@@ -2,10 +2,15 @@ import React, { useState } from 'react'
 
 const App = () => {
   const [persons, setPersons] = useState([
-    { name: 'Arto Hellas', number: '040-1231244' }
+    { name: 'Arto Hellas', number: '040-1231244' },
+    { name: 'Ada Lovelace', number: '39-44-5323523' },
+    { name: 'Dan Abramov', number: '12-43-234345' },
+    { name: 'Mary Poppendieck', number: '39-23-6423122' }
   ])
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
+  const [filter, setFilter] = useState('')
+  const [showAll, setShowAll] = useState(true)
 
   const addName = (event) => {
     event.preventDefault()
@@ -26,13 +31,29 @@ const App = () => {
   const handleNameChange = (event) => {
     setNewName(event.target.value)
   }
+
   const handleNumberChange = (event) => {
     setNewNumber(event.target.value)
   }
 
+  const handleFilterChange = (event) => {
+    setFilter(event.target.value)
+  }
+
+  const numbersToShow = showAll
+  ? persons
+  : persons.filter(person => person.name.toLowerCase().includes(filter.toLowerCase()) === true)
+
   return (
     <div>
       <h2>Phonebook</h2>
+      <form onChange={() => setShowAll(false)}>
+        filter shown with <input
+          type='text'
+          onChange={handleFilterChange}
+        />
+      </form>
+      <h2>add a new</h2>
       <form onSubmit={addName}>
         <div>
           name: <input
@@ -53,7 +74,7 @@ const App = () => {
       <h2>Numbers</h2>
       <table>
         <tbody>
-          {persons.map(person =>
+          {numbersToShow.map(person =>
             <tr key={person.name}>
               <td>{person.name}</td>
               <td>{person.number}</td>
@@ -61,61 +82,9 @@ const App = () => {
           )}
         </tbody>
       </table>
-      <ul>
-
-      </ul>
     </div>
   )
 }
-/*  const [notes, setNotes] = useState(props.notes)
-  const [newNote, setNewNote] = useState('')
-  const [showAll, setShowAll] = useState(true)
- 
-  const addNote = (event) => {
-    event.preventDefault()
-    const noteObject = {
-      content: newNote,
-      date: new Date().toISOString(),
-      important: Math.random() > 0.5,
-      id: notes.length + 1
-    }
- 
-    setNotes(notes.concat(noteObject))
-    setNewNote('')
-  }
- 
-  const handleNoteChange = (event) => {
-    console.log(event.target.value)
-    setNewNote(event.target.value)
-  }
- 
-  const notesToShow = showAll
-    ? notes
-    : notes.filter(note => note.important)
- 
-  return (
-    <div>
-      <h1>Notes</h1>
-      <div>
-        <button onClick={() => setShowAll(!showAll)}>
-          show {showAll ? 'important' : 'all'}
-        </button>
-      </div>
-      <ul>
-        {notesToShow.map(note =>
-          <Note key={note.id} note={note} />
-        )}
-      </ul>
-      <form onSubmit={addNote}>
-        <input
-          value={newNote}
-          onChange={handleNoteChange}
-        />
-        <button type="submit">save</button>
-      </form>
-    </div>
-  )
- 
-}*/
+
 export default App
 
