@@ -1,51 +1,54 @@
 import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 
-const Filter = ({ filterCountries }) => {
-    console.log(filterCountries.length)
+const ShowOneCountry = ({ oneCountry }) => {
+    return (
+        <div>
+            <h1>{oneCountry.name}</h1>
+            <p>capital {oneCountry.capital}</p>
+            <p>population {oneCountry.population}</p>
+            <h2>languages</h2>
+            <ul>
+                {oneCountry.languages.map(language =>
+                    <li key={language.name}>
+                        {language.name}
+                    </li>
+                )}
+            </ul>
+            <img alt="flag" src={oneCountry.flag} style={{ width: "50%" }}></img>
+        </div>
+    )
+}
 
+const Filter = ({ filterCountries, setOne }) => {
     if (filterCountries.length === 250) {
         return null
     } else if (filterCountries.length > 10) {
         return <p>Too many matches, specify another filter</p>
     } else if (filterCountries.length === 1) {
         const c = filterCountries[0]
-        console.log(c)
         return (
-            <div>
-                <h1>{c.name}</h1>
-                <p>capital {c.capital}</p>
-                <p>population {c.population}</p>
-                <h2>languages</h2>
-                <ul>
-                    {c.languages.map(language =>
-                        <li key={language.name}>
-                            {language.name}
-                        </li>
-                    )}
-                </ul>
-                <img src={c.flag} style={{width: "50%"}}></img>
-            </div>
+            <ShowOneCountry oneCountry={c} />
         )
     } else {
         return (
-            <table>
-                <tbody>
-                    {filterCountries.map(country =>
-                        <tr key={country.name}>
-                            <td>{country.name}</td>
-                        </tr>
-                    )}
-                </tbody>
-            </table>
+            <div>
+                {filterCountries.map(country =>
+                    <div>
+                        <p key={country.name}>
+                            {country.name}
+                            <button onClick={() => setOne(country)}>show</button>
+                        </p>
+                    </div>
+                )}
+            </div>
         )
     }
 }
 
 const Countries = () => {
     const [countries, setCountries] = useState([])
-    const [find, setFind] = useState('')
-    const [findCountries, setFindCountries] = useState(true)
+    const [filteredCountries, setFilteredCountries] = useState([])
 
     useEffect(() => {
         console.log('effect')
@@ -57,23 +60,23 @@ const Countries = () => {
             })
     }, [])
 
-    const filterCountries = findCountries
-        ? countries
-        : countries.filter(country => country.name.toLowerCase().includes(find.toLowerCase()) === true)
+    const setOne = (c) => {
+        setFilteredCountries([c])
+    }
 
     const handleInputChange = (event) => {
-        setFind(event.target.value)
+        setFilteredCountries(countries.filter(country => country.name.toLowerCase().includes(event.target.value.toLowerCase()) === true))
     }
 
     return (
         <div>
-            <form onChange={() => setFindCountries(false)}>
+            <form>
                 find countries <input
                     type='text'
                     onChange={handleInputChange}
                 />
             </form>
-            <Filter filterCountries={filterCountries} />
+            <Filter filterCountries={filteredCountries} setOne={setOne} />
         </div>
     )
 }
