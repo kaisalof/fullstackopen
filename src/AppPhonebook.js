@@ -59,7 +59,13 @@ const AppPhonebook = () => {
   const numbersToShow = showAll
     ? persons
     : persons.filter(person => person.name.toLowerCase().includes(filter.toLowerCase()) === true)
-
+/*
+    if (showAll) {
+      return persons
+    } else {
+      return toi filter juttu
+    }
+    */
   return (
     <div>
       <h2>Phonebook</h2>

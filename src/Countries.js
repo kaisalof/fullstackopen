@@ -1,6 +1,34 @@
 import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 
+const api_key = process.env.REACT_APP_API_KEY
+
+const Weather = ({ capital }) => {
+
+    const [weather, setWeather] = useState()
+
+    useEffect(() => {
+        axios
+            .get(`http://api.weatherstack.com/current?access_key=${api_key}&query=${capital}`)
+            .then(response => {
+                setWeather(response.data)
+            })
+    }, [])
+
+    if (weather) {
+        return (
+            <div>
+                <h2>Weather in {capital}</h2>
+                <p><b>temperature </b>{weather.current.temperature} Celcius</p>
+                <img alt={weather.current.weather_descriptions[0]} src={weather.current.weather_icons[0]}></img>
+                <p><b>wind: </b>{weather.current.wind_speed} mph direction {weather.current.wind_dir}</p>
+            </div>
+        )
+    } else {
+        return null
+    }
+}
+
 const ShowOneCountry = ({ oneCountry }) => {
     return (
         <div>
@@ -28,14 +56,17 @@ const Filter = ({ filterCountries, setOne }) => {
     } else if (filterCountries.length === 1) {
         const c = filterCountries[0]
         return (
-            <ShowOneCountry oneCountry={c} />
+            <div>
+                <ShowOneCountry oneCountry={c} />
+                <Weather capital={c.capital} />
+            </div>
         )
     } else {
         return (
             <div>
                 {filterCountries.map(country =>
-                    <div>
-                        <p key={country.name}>
+                    <div key={country.name}>
+                        <p>
                             {country.name}
                             <button onClick={() => setOne(country)}>show</button>
                         </p>
@@ -65,7 +96,7 @@ const Countries = () => {
     }
 
     const handleInputChange = (event) => {
-        setFilteredCountries(countries.filter(country => country.name.toLowerCase().includes(event.target.value.toLowerCase()) === true))
+        setFilteredCountries(countries.filter(country => country.name.toLowerCase().includes(event.target.value.toLowerCase())))
     }
 
     return (
