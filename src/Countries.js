@@ -4,7 +4,6 @@ import axios from 'axios'
 const api_key = process.env.REACT_APP_API_KEY
 
 const Weather = ({ capital }) => {
-
     const [weather, setWeather] = useState()
 
     useEffect(() => {

@@ -6,12 +6,6 @@ import axios from 'axios'
 
 const AppPhonebook = () => {
   const [persons, setPersons] = useState([])
-  /*const [persons, setPersons] = useState([
-    { name: 'Arto Hellas', number: '040-1231244' },
-    { name: 'Ada Lovelace', number: '39-44-5323523' },
-    { name: 'Dan Abramov', number: '12-43-234345' },
-    { name: 'Mary Poppendieck', number: '39-23-6423122' }
-  ])*/
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
   const [filter, setFilter] = useState('')
@@ -21,14 +15,14 @@ const AppPhonebook = () => {
     console.log('effect')
 
     axios
-    .get('http://localhost:3001/persons')
-    .then(response => {
-      console.log('promise fullfilled')
-      setPersons(response.data)
-    })
-  },[])
+      .get('http://localhost:3001/persons')
+      .then(response => {
+        console.log('promise fullfilled')
+        setPersons(response.data)
+      })
+  }, [])
 
-  const addName = (event) => {
+  const addName = event => {
     event.preventDefault()
     const personObject = {
       name: newName,
@@ -38,9 +32,19 @@ const AppPhonebook = () => {
     if (persons.some(person => person.name === newName)) {
       window.alert(`${newName} is already added to phonebook`)
     } else {
-      setPersons(persons.concat(personObject))
-      setNewName('')
-      setNewNumber('')
+      /* setPersons(persons.concat(personObject))
+       setNewName('')
+       setNewNumber('')
+     }*/
+
+      axios
+        .post('http://localhost:3001/persons', personObject)
+        .then(response => {
+          setPersons(persons.concat(response.data))
+          setNewName('')
+          setNewNumber('')
+          console.log(response)
+        })
     }
   }
 
@@ -59,13 +63,7 @@ const AppPhonebook = () => {
   const numbersToShow = showAll
     ? persons
     : persons.filter(person => person.name.toLowerCase().includes(filter.toLowerCase()) === true)
-/*
-    if (showAll) {
-      return persons
-    } else {
-      return toi filter juttu
-    }
-    */
+
   return (
     <div>
       <h2>Phonebook</h2>

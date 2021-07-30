@@ -1,10 +1,12 @@
 import ReactDOM from 'react-dom';
 import React from 'react';
-//import AppPhonebook from './AppPhonebook';
-import Countries from './Countries'
-const api_key = process.env.REACT_APP_API_KEY
+import AppPhonebook from './AppPhonebook';
+//import Countries from './Countries'
+//import AppNotes from './AppNotes'
+
 ReactDOM.render(
-  //<AppPhonebook />,
-  <Countries />,
+  <AppPhonebook />,
+  //<Countries />,
+  //<AppNotes />,
   document.getElementById('root')
 )
