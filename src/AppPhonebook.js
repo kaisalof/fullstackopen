@@ -2,7 +2,8 @@ import React, { useState, useEffect } from 'react'
 import Numbers from './components/Numbers'
 import Filter from './components/Filter'
 import PersonForm from './components/PersonForm'
-import axios from 'axios'
+//import axios from 'axios'
+import personService from './services/persons'
 
 const AppPhonebook = () => {
   const [persons, setPersons] = useState([])
@@ -13,14 +14,31 @@ const AppPhonebook = () => {
 
   useEffect(() => {
     console.log('effect')
-
-    axios
-      .get('http://localhost:3001/persons')
+    personService
+      .getAll()
       .then(response => {
-        console.log('promise fullfilled')
         setPersons(response.data)
       })
+
+    /*
+        axios
+          .get('http://localhost:3001/persons')
+          .then(response => {
+            console.log('promise fullfilled')
+            setPersons(response.data)
+          })*/
   }, [])
+
+  /*const toggleImportanceOf = id => {
+      const note = notes.find(n => n.id === id)
+      const changedNote = { ...note, important: !note.important }
+  
+      noteService
+        .update(id, changedNote)
+        .then(response => {
+          setNotes(notes.map(note => note.id !== id ? note : response.data))
+        })
+    } */
 
   const addName = event => {
     event.preventDefault()
@@ -32,19 +50,27 @@ const AppPhonebook = () => {
     if (persons.some(person => person.name === newName)) {
       window.alert(`${newName} is already added to phonebook`)
     } else {
-      /* setPersons(persons.concat(personObject))
-       setNewName('')
-       setNewNumber('')
-     }*/
-
-      axios
-        .post('http://localhost:3001/persons', personObject)
+      personService
+        .create(personObject)
         .then(response => {
           setPersons(persons.concat(response.data))
           setNewName('')
           setNewNumber('')
-          console.log(response)
         })
+      /* setPersons(persons.concat(personObject))
+       setNewName('')
+       setNewNumber('')
+     }*/
+      /*
+            axios
+              .post('http://localhost:3001/persons', personObject)
+              .then(response => {
+                setPersons(persons.concat(response.data))
+                setNewName('')
+                setNewNumber('')
+                console.log(response)
+              })*/
+
     }
   }
 
